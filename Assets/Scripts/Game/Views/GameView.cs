@@ -61,16 +61,25 @@ namespace Game.Views
             switch (gameResult)
             {
                 case GameResultType.CrossWin:
+                    messageLabel.text = "First player win!";
                     fieldView.DrawWinLine(winningLineIndex);
                     break;
                 case GameResultType.CircleWin:
+                    messageLabel.text = "Second player win!";
                     fieldView.DrawWinLine(winningLineIndex);
                     break;
                 case GameResultType.Draw:
+                    messageLabel.text = "Draw";
                     break;
             }
 
             replayButton.gameObject.SetActive(true);
+        }
+
+        public void SetPlayerTurnMessage(int playerIndex)
+        {
+            string message = $"{(playerIndex == 0 ? "First" : "Second")} player turn";
+            messageLabel.text = message;
         }
 
         public void SetDrawCount(int drawCount)

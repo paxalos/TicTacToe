@@ -38,8 +38,14 @@ namespace Game.PlayerLogics
         public UniTask PlayerTurn()
         {
             var player = players[currentPlayerIndex];
+            view.SetPlayerTurnMessage(currentPlayerIndex);
             currentPlayerIndex = currentPlayerIndex.IncrementInRange(players.Length);
             return player.SelectCell();
+        }
+
+        public void ResetPlayers()
+        {
+            currentPlayerIndex = 0;
         }
     }
 }
