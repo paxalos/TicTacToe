@@ -4,6 +4,7 @@ namespace Game.Enums
     {
         RealPlayer,
         EasyBot,
+        NormalBot,
         HardBot
     }
 }

@@ -101,7 +101,7 @@ namespace Game.Views
             presenter.SetPlayers(new PlayerType[]
             {
                 PlayerType.RealPlayer,
-                PlayerType.RealPlayer
+                PlayerType.NormalBot
             });
             presenter.StartGame();
         }

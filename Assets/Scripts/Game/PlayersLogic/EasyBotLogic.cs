@@ -1,22 +1,21 @@
-using Cysharp.Threading.Tasks;
 using Game.Models;
+using Game.Presenters;
 using Game.Views;
-using UnityEngine;
 
 namespace Game.PlayerLogics
 {
-    public class EasyBotLogic : PlayerLogic
+    public class EasyBotLogic : BotLogic
     {
-        public EasyBotLogic(GameView view, GameModel model) : base(view, model)
+        public EasyBotLogic(GameView view, 
+                            GameModel model, 
+                            GameWinController gameWinController, 
+                            int playerIndex) : base(view, 
+                                                    model, 
+                                                    gameWinController, 
+                                                    playerIndex)
         {
         }
 
-        public override UniTask SelectCell()
-        {
-            int[] indexesForChoise = model.GetCellIndexesForChoise();
-            int chosenIndex = Random.Range(0, indexesForChoise.Length);
-            view.SelectCell(indexesForChoise[chosenIndex]);
-            return new UniTask();
-        }
+        protected override int MaxDepth => 1;
     }
 }

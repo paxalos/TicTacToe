@@ -1,16 +1,21 @@
-using UnityEngine;
+using Game.Models;
+using Game.Presenters;
+using Game.Views;
 
-public class HardBotLogic : MonoBehaviour
+namespace Game.PlayerLogics
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public class HardBotLogic : BotLogic
     {
-        
-    }
+        public HardBotLogic(GameView view, 
+                            GameModel model, 
+                            GameWinController gameWinController, 
+                            int playerIndex) : base(view, 
+                                                    model, 
+                                                    gameWinController, 
+                                                    playerIndex)
+        {
+        }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        protected override int MaxDepth => int.MaxValue;
     }
 }

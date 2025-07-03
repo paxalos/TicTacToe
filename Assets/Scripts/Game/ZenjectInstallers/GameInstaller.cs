@@ -17,6 +17,7 @@ namespace Game.Installers
             Container.BindInterfacesAndSelfTo<GameModel>().AsSingle();
             Container.BindInterfacesAndSelfTo<PlayerLogicController>().AsSingle();
             Container.BindInterfacesAndSelfTo<GamePresenter>().AsSingle();
+            Container.BindInterfacesAndSelfTo<GameWinController>().AsSingle();
         }
     }
 }
