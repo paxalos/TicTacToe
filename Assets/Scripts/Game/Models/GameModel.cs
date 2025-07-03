@@ -10,7 +10,7 @@ namespace Game.Models
     {
         [Inject] private GameView view;
         private readonly ElementType[] elementsQueue = { ElementType.Cross, ElementType.Circle };
-        private int[] playerWins = new int[PLAYERS_COUNT];
+        private int[] playersWinCount = new int[PLAYERS_COUNT];
         private int drawCount;
 
         private const int CELLS_COUNT = 9;
@@ -30,11 +30,11 @@ namespace Game.Models
         public void SetGameResult(GameResultType gameResult, int winningLineIndex)
         {
             if (gameResult == GameResultType.Draw)
-                ++drawCount;
+                view.SetDrawCount(++drawCount);
             else
             {
                 int playerIndex = (int)gameResult;
-                ++playerWins[playerIndex];
+                view.SetPlayerWinCount(playerIndex, ++playersWinCount[playerIndex]);
             }
 
             view.SetGameResult(gameResult, winningLineIndex);

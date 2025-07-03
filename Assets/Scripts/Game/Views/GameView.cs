@@ -5,11 +5,16 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
+using TMPro;
 
 namespace Game.Views
 {
     public class GameView : MonoBehaviour
     {
+        [SerializeField] private Button mainMenuButton;
+        [SerializeField] private TMP_Text messageLabel;
+        [SerializeField] private TMP_Text drawCountLabel;
+        [SerializeField] private TMP_Text[] playersWinCountLabel;
         [SerializeField] private FieldView fieldView;
         [SerializeField] private Button[] cells;
         [SerializeField] private ElementView[] elementsPrefabs;
@@ -67,6 +72,18 @@ namespace Game.Views
 
             replayButton.gameObject.SetActive(true);
         }
+
+        public void SetDrawCount(int drawCount)
+        {
+            drawCountLabel.text = drawCount.ToString();
+        }
+
+        public void SetPlayerWinCount(int playerIndex, int winCount)
+        {
+            var playerWinCountLabel = playersWinCountLabel[playerIndex];
+            playerWinCountLabel.text = winCount.ToString();
+        }
+
 
         private void Awake()
         {
