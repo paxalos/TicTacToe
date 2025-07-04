@@ -12,7 +12,7 @@ namespace Game.Presenters
         [Inject] private PlayerLogicPresenter playerLogicPresenter;
         [Inject] private GameWinPresenter gameWinPresenter;
 
-        private const float ELEMENT_DRAW_DELAY = 20f / 60f;
+        private const float PLAY_SYMBOL_DRAW_DELAY = 20f / 60f;
         private const float WIN_LINE_DRAW_DELAY = 20f / 60f;
 
         public void SetPlayers(PlayerType[] playerTypes)
@@ -35,7 +35,7 @@ namespace Game.Presenters
             while (gameResult == GameResultType.InGame)
             {
                 await playerLogicPresenter.PlayerTurn().SuppressCancellationThrow();
-                await UniTask.WaitForSeconds(ELEMENT_DRAW_DELAY).SuppressCancellationThrow();
+                await UniTask.WaitForSeconds(PLAY_SYMBOL_DRAW_DELAY).SuppressCancellationThrow();
                 var cellElements = model.CellPlaySymbols;
                 gameResult = gameWinPresenter.CalculateGameResult(cellElements, out winningLineIndex);
             }
