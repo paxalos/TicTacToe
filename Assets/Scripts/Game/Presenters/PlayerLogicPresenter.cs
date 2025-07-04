@@ -8,11 +8,11 @@ using Zenject;
 
 namespace Game.PlayerLogics
 {
-    public class PlayerLogicController
+    public class PlayerLogicPresenter
     {
-        [Inject] private GameView view;
+        [Inject] private GameWindowView gameWindow;
         [Inject] private GameModel model;
-        [Inject] private GameWinController gameWinController;
+        [Inject] private GameWinPresenter gameWinPresenter;
 
         private PlayerLogic[] players;
         private int currentPlayerIndex;
@@ -25,24 +25,24 @@ namespace Game.PlayerLogics
                 switch (playerTypes[i])
                 {
                     case PlayerType.RealPlayer:
-                        players[i] = new RealPlayerLogic(view, model);
+                        players[i] = new RealPlayerLogic(gameWindow, model);
                         break;
                     case PlayerType.EasyBot:
-                        players[i] = new EasyBotLogic(view,
+                        players[i] = new EasyBotLogic(gameWindow,
                                                       model,
-                                                      gameWinController,
+                                                      gameWinPresenter,
                                                       i);
                         break;
                     case PlayerType.NormalBot:
-                        players[i] = new NormalBotLogic(view,
+                        players[i] = new NormalBotLogic(gameWindow,
                                                         model,
-                                                        gameWinController,
+                                                        gameWinPresenter,
                                                         i);
                         break;
                     case PlayerType.HardBot:
-                        players[i] = new HardBotLogic(view,
+                        players[i] = new HardBotLogic(gameWindow,
                                                       model,
-                                                      gameWinController,
+                                                      gameWinPresenter,
                                                       i);
                         break;
                 }
@@ -52,7 +52,7 @@ namespace Game.PlayerLogics
         public UniTask PlayerTurn()
         {
             var player = players[currentPlayerIndex];
-            view.SetPlayerTurnMessage(currentPlayerIndex);
+            gameWindow.SetPlayerTurnMessage(currentPlayerIndex);
             currentPlayerIndex = currentPlayerIndex.IncrementInRange(players.Length);
             return player.SelectCell();
         }

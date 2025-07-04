@@ -5,10 +5,10 @@ namespace Game.Views
 {
     public class ElementView : MonoBehaviour
     {
-        [SerializeField] private ElementType elementType;
+        [SerializeField] private PlaySymbolType playSymbol;
         [SerializeField] private Animator animator;
 
-        public ElementType ElementType => elementType;
+        public PlaySymbolType PlaySymbol => playSymbol;
 
         private const string DRAW_TRIGGER = "Draw";
 

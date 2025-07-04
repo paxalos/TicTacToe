@@ -9,25 +9,25 @@ namespace Game.PlayerLogics
 {
     public abstract class BotLogic : PlayerLogic
     {
-        private GameWinController gameWinController;
+        private GameWinPresenter gameWinPresenter;
         private int playerIndex;
 
         protected abstract int MaxDepth { get; }
 
-        public BotLogic(GameView view, 
+        public BotLogic(GameWindowView gameWindow, 
                         GameModel model,
-                        GameWinController gameWinController,
-                        int playerIndex) : base(view, model)
+                        GameWinPresenter gameWinPresenter,
+                        int playerIndex) : base(gameWindow, model)
         {
-            this.gameWinController = gameWinController;
+            this.gameWinPresenter = gameWinPresenter;
             this.playerIndex = playerIndex;
         }
 
-        private int Minimax(ElementType[] cellElements,
+        private int Minimax(PlaySymbolType[] cellPlaySymbols,
                             int depth,
                             bool isMaximizing)
         {
-            var gameResult = gameWinController.CalculateGameResult(cellElements, out _);
+            var gameResult = gameWinPresenter.CalculateGameResult(cellPlaySymbols, out _);
 
             var winningGameResult = model.GetWinningResultByPlayerIndex(playerIndex);
             if (gameResult == winningGameResult)
@@ -48,17 +48,17 @@ namespace Game.PlayerLogics
                 return 0;
             }
 
-            var element = model.GetElementByPlayerIndex(playerIndex);
+            var element = model.GetPlaySymbolByPlayerIndex(playerIndex);
             if (isMaximizing)
             {
                 int bestScore = int.MinValue;
                 for (int i = 0; i < GameModel.CELLS_COUNT; i++)
                 {
-                    if (cellElements[i] == ElementType.Empty)
+                    if (cellPlaySymbols[i] == PlaySymbolType.Empty)
                     {
-                        cellElements[i] = element;
-                        int score = Minimax(cellElements, depth + 1, false);
-                        cellElements[i] = ElementType.Empty;
+                        cellPlaySymbols[i] = element;
+                        int score = Minimax(cellPlaySymbols, depth + 1, false);
+                        cellPlaySymbols[i] = PlaySymbolType.Empty;
                         bestScore = Math.Max(score, bestScore);
                     }
                 }
@@ -69,11 +69,11 @@ namespace Game.PlayerLogics
                 int bestScore = int.MaxValue;
                 for (int i = 0; i < GameModel.CELLS_COUNT; i++)
                 {
-                    if (cellElements[i] == ElementType.Empty)
+                    if (cellPlaySymbols[i] == PlaySymbolType.Empty)
                     {
-                        cellElements[i] = model.GetEnemyElement(element);
-                        int score = Minimax(cellElements, depth + 1, true);
-                        cellElements[i] = ElementType.Empty;
+                        cellPlaySymbols[i] = model.GetEnemyPlaySymbol(element);
+                        int score = Minimax(cellPlaySymbols, depth + 1, true);
+                        cellPlaySymbols[i] = PlaySymbolType.Empty;
                         bestScore = Math.Min(score, bestScore);
                     }
                 }
@@ -88,16 +88,16 @@ namespace Game.PlayerLogics
                 int bestScore = int.MinValue;
                 int selectedIndex = -1;
 
-                var cellElements = model.CellElements;
-                var element = model.GetElementByPlayerIndex(playerIndex);
+                var cellPlaySymbols = model.CellPlaySymbols;
+                var element = model.GetPlaySymbolByPlayerIndex(playerIndex);
 
                 for (int i = 0; i < GameModel.CELLS_COUNT; i++)
                 {
-                    if (cellElements[i] == ElementType.Empty)
+                    if (cellPlaySymbols[i] == PlaySymbolType.Empty)
                     {
-                        cellElements[i] = element;
-                        int score = Minimax(cellElements, 0, false);
-                        cellElements[i] = ElementType.Empty;
+                        cellPlaySymbols[i] = element;
+                        int score = Minimax(cellPlaySymbols, 0, false);
+                        cellPlaySymbols[i] = PlaySymbolType.Empty;
                         if (score > bestScore)
                         {
                             bestScore = score;
@@ -108,7 +108,7 @@ namespace Game.PlayerLogics
 
                 await UniTask.SwitchToMainThread();
 
-                view.SelectCell(selectedIndex);
+                gameWindow.SelectCell(selectedIndex);
             });
         }
     }

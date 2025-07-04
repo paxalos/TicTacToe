@@ -3,9 +3,9 @@ using System.Linq;
 
 namespace Game.Presenters
 {
-    public class GameWinController
+    public class GameWinPresenter
     {
-        public GameResultType CalculateGameResult(ElementType[] cellElements, out int winLineIndex)
+        public GameResultType CalculateGameResult(PlaySymbolType[] cellPlaySymbols, out int winLineIndex)
         {
             int[][] winningsCombinations = new int[][]
             {
@@ -20,7 +20,7 @@ namespace Game.Presenters
             };
 
             for (int i = 0; i < winningsCombinations.Length; i++)
-                if (IsWinningCombination(cellElements,
+                if (IsWinningCombination(cellPlaySymbols,
                                          winningsCombinations[i],
                                          out var gameResult))
                 {
@@ -30,30 +30,30 @@ namespace Game.Presenters
 
             winLineIndex = -1;
 
-            if (cellElements.Any(cellElement => cellElement == ElementType.Empty))
+            if (cellPlaySymbols.Any(cellPlaySymbol => cellPlaySymbol == PlaySymbolType.Empty))
                 return GameResultType.InGame;
 
             return GameResultType.Draw;
         }
 
-        private bool IsWinningCombination(ElementType[] cellElements,
+        private bool IsWinningCombination(PlaySymbolType[] cellPlaySymbols,
                                           int[] indexes,
                                           out GameResultType gameResultType)
         {
             gameResultType = GameResultType.InGame;
-            var combination = indexes.Select(index => cellElements[index]);
+            var combination = indexes.Select(index => cellPlaySymbols[index]);
 
-            if (combination.All(element => element != ElementType.Empty))
+            if (combination.All(playSymbol => playSymbol != PlaySymbolType.Empty))
             {
-                var elementForCompare = combination.First();
-                if (combination.All(element => element == elementForCompare))
+                var playSymbolForCompare = combination.First();
+                if (combination.All(element => element == playSymbolForCompare))
                 {
-                    switch (elementForCompare)
+                    switch (playSymbolForCompare)
                     {
-                        case ElementType.Cross:
+                        case PlaySymbolType.Cross:
                             gameResultType = GameResultType.CrossWin;
                             break;
-                        case ElementType.Circle:
+                        case PlaySymbolType.Circle:
                             gameResultType = GameResultType.CircleWin;
                             break;
                     }

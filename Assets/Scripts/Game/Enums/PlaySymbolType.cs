@@ -1,6 +1,6 @@
 namespace Game.Enums
 {
-    public enum ElementType
+    public enum PlaySymbolType
     {
         Empty,
         Cross,

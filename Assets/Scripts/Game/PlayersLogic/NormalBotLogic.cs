@@ -6,12 +6,12 @@ namespace Game.PlayerLogics
 {
     public class NormalBotLogic : BotLogic
     {
-        public NormalBotLogic(GameView view,
+        public NormalBotLogic(GameWindowView gameWindow,
                               GameModel model,
-                              GameWinController gameWinController,
-                              int playerIndex) : base(view,
+                              GameWinPresenter gameWinPresenter,
+                              int playerIndex) : base(gameWindow,
                                                       model,
-                                                      gameWinController,
+                                                      gameWinPresenter,
                                                       playerIndex)
         {
         }

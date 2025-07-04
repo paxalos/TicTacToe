@@ -223,5 +223,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c78490ceb05e17498535aae09e7564a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  elementType: 2
+  playSymbol: 2
   animator: {fileID: 3889630107676490439}

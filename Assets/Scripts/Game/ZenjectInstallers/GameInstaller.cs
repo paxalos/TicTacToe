@@ -9,15 +9,15 @@ namespace Game.Installers
 {
     public class GameInstaller : MonoInstaller
     {
-        [SerializeField] private GameView gameView;
+        [SerializeField] private GameWindowView gameWindow;
 
         public override void InstallBindings()
         {
-            Container.BindInstance(gameView).AsSingle();
+            Container.BindInstance(gameWindow).AsSingle();
             Container.BindInterfacesAndSelfTo<GameModel>().AsSingle();
-            Container.BindInterfacesAndSelfTo<PlayerLogicController>().AsSingle();
+            Container.BindInterfacesAndSelfTo<PlayerLogicPresenter>().AsSingle();
             Container.BindInterfacesAndSelfTo<GamePresenter>().AsSingle();
-            Container.BindInterfacesAndSelfTo<GameWinController>().AsSingle();
+            Container.BindInterfacesAndSelfTo<GameWinPresenter>().AsSingle();
         }
     }
 }

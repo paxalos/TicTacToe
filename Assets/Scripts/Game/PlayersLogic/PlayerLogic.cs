@@ -6,12 +6,12 @@ namespace Game.PlayerLogics
 {
     public abstract class PlayerLogic
     {
-        protected GameView view;
+        protected GameWindowView gameWindow;
         protected GameModel model;
 
-        protected PlayerLogic(GameView view, GameModel model)
+        protected PlayerLogic(GameWindowView gameWindow, GameModel model)
         {
-            this.view = view;
+            this.gameWindow = gameWindow;
             this.model = model;
         }
 

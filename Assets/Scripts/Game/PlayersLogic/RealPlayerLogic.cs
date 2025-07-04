@@ -6,15 +6,15 @@ namespace Game.PlayerLogics
 {
     public class RealPlayerLogic : PlayerLogic
     {
-        public RealPlayerLogic(GameView view, GameModel model) : base(view, model)
+        public RealPlayerLogic(GameWindowView gameWindow, GameModel model) : base(gameWindow, model)
         {
         }
 
         public override UniTask SelectCell()
         {
             int[] indexesForChoise = model.GetCellIndexesForChoise();
-            view.ActivateCells(indexesForChoise);
-            return view.GetCellClickWait(indexesForChoise);
+            gameWindow.ActivateCells(indexesForChoise);
+            return gameWindow.GetCellClickWait(indexesForChoise);
         }
     }
 }

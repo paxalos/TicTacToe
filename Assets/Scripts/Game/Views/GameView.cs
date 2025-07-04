@@ -1,133 +1,56 @@
-using Cysharp.Threading.Tasks;
 using Game.Enums;
+using Game.Models;
 using Game.Presenters;
-using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Zenject;
-using TMPro;
 
 namespace Game.Views
 {
     public class GameView : MonoBehaviour
     {
         [SerializeField] private Button mainMenuButton;
-        [SerializeField] private TMP_Text messageLabel;
-        [SerializeField] private TMP_Text drawCountLabel;
-        [SerializeField] private TMP_Text[] playersWinCountLabel;
-        [SerializeField] private FieldView fieldView;
-        [SerializeField] private Button[] cells;
-        [SerializeField] private ElementView[] elementsPrefabs;
-        [SerializeField] private Button replayButton;
+        [SerializeField] private SelectModeWindowView selectModeWindow;
+        [SerializeField] private GameWindowView gameWindow;
 
         [Inject] private GamePresenter presenter;
 
-        public void ActivateCells(int[] cellIndexes)
-        {
-            for (int i = 0; i < cellIndexes.Length; i++)
-            {
-                int cellIndex = cellIndexes[i];
-                cells[cellIndex].interactable = true;
-            }
-        }
-
-        public UniTask GetCellClickWait(int[] cellIndexes)
-        {
-            UniTask[] cellsWaiting = new UniTask[cellIndexes.Length];
-            for (int i = 0; i < cellIndexes.Length; i++)
-            {
-                int cellIndex = cellIndexes[i];
-                var cell = cells[cellIndex];
-                cellsWaiting[i] = cell.OnClickAsync();
-            }
-            return UniTask.WhenAny(cellsWaiting);
-        }
-
-        public void SelectCell(int cellIndex)
-        {
-            DeactivateAllCells();
-            presenter.SelectCell(cellIndex);
-        }
-
-        public void SetElementInCell(int cellIndex, ElementType elementType)
-        {
-            var elementPrefab = elementsPrefabs.First(elementPrefab => elementPrefab.ElementType == elementType);
-            var element = Instantiate(elementPrefab, cells[cellIndex].transform);
-            element.StartDrawAnimation();
-        }
-
-        public void SetGameResult(GameResultType gameResult, int winningLineIndex)
-        {
-            switch (gameResult)
-            {
-                case GameResultType.CrossWin:
-                    messageLabel.text = "First player win!";
-                    fieldView.DrawWinLine(winningLineIndex);
-                    break;
-                case GameResultType.CircleWin:
-                    messageLabel.text = "Second player win!";
-                    fieldView.DrawWinLine(winningLineIndex);
-                    break;
-                case GameResultType.Draw:
-                    messageLabel.text = "Draw";
-                    break;
-            }
-
-            replayButton.gameObject.SetActive(true);
-        }
-
-        public void SetPlayerTurnMessage(int playerIndex)
-        {
-            string message = $"{(playerIndex == 0 ? "First" : "Second")} player turn";
-            messageLabel.text = message;
-        }
-
-        public void SetDrawCount(int drawCount)
-        {
-            drawCountLabel.text = drawCount.ToString();
-        }
-
-        public void SetPlayerWinCount(int playerIndex, int winCount)
-        {
-            var playerWinCountLabel = playersWinCountLabel[playerIndex];
-            playerWinCountLabel.text = winCount.ToString();
-        }
-
-
         private void Awake()
         {
-            replayButton.onClick.AddListener(ReplayButton_Click);
-            fieldView.DrawFieldLines();
-            presenter.SetPlayers(new PlayerType[]
-            {
-                PlayerType.RealPlayer,
-                PlayerType.NormalBot
-            });
-            presenter.StartGame();
+            mainMenuButton.onClick.AddListener(MainMenuButton_Clicked);
+
+            selectModeWindow.gameObject.SetActive(true);
+            gameWindow.gameObject.SetActive(false);
+
+            selectModeWindow.PlayButtonClicked += SelectModeWindow_PlayButtonClicked;
         }
 
-        private void ReplayButton_Click()
+        private void MainMenuButton_Clicked()
         {
-            for (int i = 0; i < cells.Length; i++)
+            SceneManager.LoadScene("MainMenu");
+        }
+
+        private void SelectModeWindow_PlayButtonClicked()
+        {
+            selectModeWindow.gameObject.SetActive(false);
+            gameWindow.gameObject.SetActive(true);
+
+            PlayerType[] players = new PlayerType[GameModel.PLAYERS_COUNT];
+            switch (selectModeWindow.PlaySymbol)
             {
-                var cellTransform = cells[i].transform;
-                if (cellTransform.childCount != 0)
-                {
-                    var elementTransform = cellTransform.GetChild(0);
-                    Destroy(elementTransform.gameObject);
-                }
+                case PlaySymbolType.Cross:
+                    players[0] = PlayerType.RealPlayer;
+                    players[1] = selectModeWindow.Enemy;
+                    break;
+                case PlaySymbolType.Circle:
+                    players[0] = selectModeWindow.Enemy;
+                    players[1] = PlayerType.RealPlayer;
+                    break;
             }
+            presenter.SetPlayers(players);
 
-            replayButton.gameObject.SetActive(false);
-
-            fieldView.DrawFieldLines();
-            presenter.StartGame();
-        }
-
-        private void DeactivateAllCells()
-        {
-            for (int i = 0; i < cells.Length; i++)
-                cells[i].interactable = false;
+            gameWindow.StartGame();
         }
     }
 }
