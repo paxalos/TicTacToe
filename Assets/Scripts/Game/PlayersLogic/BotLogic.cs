@@ -1,9 +1,9 @@
+using System;
 using Cysharp.Threading.Tasks;
 using Game.Enums;
 using Game.Models;
 using Game.Presenters;
 using Game.Views;
-using System;
 
 namespace Game.PlayerLogics
 {
@@ -14,7 +14,7 @@ namespace Game.PlayerLogics
 
         protected abstract int MaxDepth { get; }
 
-        public BotLogic(GameWindowView gameWindow, 
+        public BotLogic(GameWindowView gameWindow,
                         GameModel model,
                         GameWinPresenter gameWinPresenter,
                         int playerIndex) : base(gameWindow, model)

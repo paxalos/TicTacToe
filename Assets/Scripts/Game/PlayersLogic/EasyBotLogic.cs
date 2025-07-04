@@ -6,12 +6,12 @@ namespace Game.PlayerLogics
 {
     public class EasyBotLogic : BotLogic
     {
-        public EasyBotLogic(GameWindowView gameWindow, 
-                            GameModel model, 
-                            GameWinPresenter gameWinPresenter, 
-                            int playerIndex) : base(gameWindow, 
-                                                    model, 
-                                                    gameWinPresenter, 
+        public EasyBotLogic(GameWindowView gameWindow,
+                            GameModel model,
+                            GameWinPresenter gameWinPresenter,
+                            int playerIndex) : base(gameWindow,
+                                                    model,
+                                                    gameWinPresenter,
                                                     playerIndex)
         {
         }

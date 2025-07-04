@@ -1,7 +1,7 @@
-using Game.Enums;
-using Game.Views;
 using System;
 using System.Linq;
+using Game.Enums;
+using Game.Views;
 using Utils;
 using Zenject;
 
@@ -33,7 +33,7 @@ namespace Game.Models
         {
             var playerElement = playSymbolsQueue[CurrentPlayerIndex];
             cellPlaySymbols[cellIndex] = playerElement;
-            gameWindow.SetElementInCell(cellIndex, playerElement);
+            gameWindow.SetPlaySymbolInCell(cellIndex, playerElement);
             CurrentPlayerIndex = CurrentPlayerIndex.IncrementInRange(PLAYERS_COUNT);
         }
 

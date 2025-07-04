@@ -1,11 +1,11 @@
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using Game.Enums;
 using Game.Presenters;
-using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
-using TMPro;
 
 namespace Game.Views
 {
@@ -48,7 +48,7 @@ namespace Game.Views
             presenter.SelectCell(cellIndex);
         }
 
-        public void SetElementInCell(int cellIndex, PlaySymbolType elementType)
+        public void SetPlaySymbolInCell(int cellIndex, PlaySymbolType elementType)
         {
             var elementPrefab = elementsPrefabs.First(elementPrefab => elementPrefab.PlaySymbol == elementType);
             var element = Instantiate(elementPrefab, cells[cellIndex].transform);
@@ -91,7 +91,7 @@ namespace Game.Views
             var playerWinCountLabel = playersWinCountLabel[playerIndex];
             playerWinCountLabel.text = winCount.ToString();
         }
-        
+
         public async void StartGame()
         {
             fieldView.DrawFieldLines();
@@ -103,6 +103,17 @@ namespace Game.Views
         private void Awake()
         {
             replayButton.onClick.AddListener(ReplayButton_Click);
+            ResetLabels();
+        }
+
+        private void ResetLabels()
+        {
+            messageLabel.text = string.Empty;
+
+            string resetCountString = "0";
+            drawCountLabel.text = resetCountString;
+            for (int i = 0; i < playersWinCountLabel.Length; i++)
+                playersWinCountLabel[i].text = resetCountString;
         }
 
         private void ReplayButton_Click()

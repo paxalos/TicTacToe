@@ -2,7 +2,6 @@ using Cysharp.Threading.Tasks;
 using Game.Enums;
 using Game.Models;
 using Game.PlayerLogics;
-using System.Linq;
 using Zenject;
 
 namespace Game.Presenters
@@ -33,7 +32,7 @@ namespace Game.Presenters
 
             var gameResult = GameResultType.InGame;
             int winningLineIndex = -1;
-            while(gameResult == GameResultType.InGame)
+            while (gameResult == GameResultType.InGame)
             {
                 await playerLogicPresenter.PlayerTurn().SuppressCancellationThrow();
                 await UniTask.WaitForSeconds(ELEMENT_DRAW_DELAY).SuppressCancellationThrow();

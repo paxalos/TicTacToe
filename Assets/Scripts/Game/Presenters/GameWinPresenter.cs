@@ -1,5 +1,5 @@
-using Game.Enums;
 using System.Linq;
+using Game.Enums;
 
 namespace Game.Presenters
 {
@@ -7,7 +7,7 @@ namespace Game.Presenters
     {
         public GameResultType CalculateGameResult(PlaySymbolType[] cellPlaySymbols, out int winLineIndex)
         {
-            int[][] winningsCombinations = new int[][]
+            int[][] winCombinations = new int[][]
             {
                 new int[] {0, 1, 2},
                 new int[] {3, 4, 5},
@@ -19,9 +19,9 @@ namespace Game.Presenters
                 new int[] {2, 4, 6},
             };
 
-            for (int i = 0; i < winningsCombinations.Length; i++)
+            for (int i = 0; i < winCombinations.Length; i++)
                 if (IsWinningCombination(cellPlaySymbols,
-                                         winningsCombinations[i],
+                                         winCombinations[i],
                                          out var gameResult))
                 {
                     winLineIndex = i;
